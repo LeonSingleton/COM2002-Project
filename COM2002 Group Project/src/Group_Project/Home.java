@@ -3,6 +3,9 @@ package Group_Project;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Home {
 
@@ -38,6 +41,14 @@ public class Home {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		JButton btnHello = new JButton("hello");
+		btnHello.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnHello.setBounds(114, 51, 89, 23);
+		frame.getContentPane().add(btnHello);
 	}
-
 }
