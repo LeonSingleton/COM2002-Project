@@ -43,7 +43,7 @@ public class Home {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JButton btnHello = new JButton("hello");
+		JButton btnHello = new JButton("hello world");
 		btnHello.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
