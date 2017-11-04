@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.SystemColor;
 
 public class Login extends JFrame {
 
@@ -80,7 +81,7 @@ public class Login extends JFrame {
 			}
 		});
 		login.setForeground(Color.GRAY);
-		login.setBackground(Color.LIGHT_GRAY);
+		login.setBackground(SystemColor.activeCaption);
 		login.setBounds(81, 111, 103, 23);
 		contentPane.add(login);
 	}
