@@ -14,6 +14,7 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
+import java.sql.*;
 
 public class Login extends JFrame {
 
@@ -84,6 +85,17 @@ public class Login extends JFrame {
 		login.setBackground(SystemColor.activeCaption);
 		login.setBounds(81, 111, 103, 23);
 		contentPane.add(login);
+		
+		try {
+		String host = "jdbc:mysql://stusql.dcs.shef.ac.uk/team009";
+		String uName = "team009";
+		String uPass= "9e81b723";
+		Connection con = DriverManager.getConnection( host, uName, uPass );
+		}
+		catch ( SQLException err ) {
+			System.out.println( err.getMessage( ) );
+			}
+		
 	}
 
 }
