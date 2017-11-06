@@ -92,6 +92,13 @@ public class Secretaryhome extends JFrame {
 		contentPane.add(bookholiday);
 		
 		JButton billing = new JButton("Billing");
+		billing.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Billing Billing = new Billing();   
+		        setVisible(false); // Hide current frame
+		        Billing.setVisible(true);
+			}
+		});
 		billing.setBounds(576, 115, 124, 37);
 		contentPane.add(billing);
 		
