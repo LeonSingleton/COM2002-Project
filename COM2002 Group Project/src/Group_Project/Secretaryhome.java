@@ -99,6 +99,27 @@ public class Secretaryhome extends JFrame {
 		label.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		label.setBounds(287, 23, 278, 37);
 		contentPane.add(label);
+		
+		JButton dentist = new JButton("Dentist");
+		dentist.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dentisthygienist dentist = new dentisthygienist("Dentist");   
+		        setVisible(false); // Hide current frame
+		        dentist.setVisible(true);
+			}
+		});
+		dentist.setBounds(183, 189, 97, 25);
+		contentPane.add(dentist);
+		
+		JButton hygienist = new JButton("Hygienist");
+		hygienist.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dentisthygienist hygienist = new dentisthygienist("Hygienist");   
+		        setVisible(false); // Hide current frame
+		        hygienist.setVisible(true);
+			}
+		});
+		hygienist.setBounds(415, 189, 97, 25);
+		contentPane.add(hygienist);
 	}
-
 }
