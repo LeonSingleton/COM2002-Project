@@ -185,15 +185,17 @@ public class CreateTables{
 			int repair = res.getInt(5);
 			System.out.println(planName + " " + patient + " " + checkup + " " + hygiene + " " + repair);
 		}
-		*/
-			
-			
 		
+			
+			
+		RETRIEVES COLUMN NAMES FOR A TABLE
 			DatabaseMetaData meta = con.getMetaData();
 		     ResultSet resultSet = meta.getColumns("team009", null, "Address", "%");
 		     while (resultSet.next()) {
 		       System.out.println(resultSet.getString(4));
+		
 		     }
+		     */
 		}
 	}
 }
