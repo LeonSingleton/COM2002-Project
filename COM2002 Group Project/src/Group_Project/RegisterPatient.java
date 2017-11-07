@@ -1,21 +1,22 @@
 package Group_Project;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
+import java.sql.*;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDayChooser;
+import java.util.*;
 
 public class RegisterPatient extends JFrame {
 
@@ -28,6 +29,17 @@ public class RegisterPatient extends JFrame {
 	private JTextField districtfield;
 	private JTextField streetfield;
 	private JTextField cityfield;
+	private String forename;
+	private String surname;
+	private String title;
+	private String phonenumber;
+	private String dateOfBirth;
+	private String house;
+	private int houseint;
+	private String street;
+	private String district;
+	private String city;
+	private String postcode;
 
 	/**
 	 * Launch the application.
@@ -77,21 +89,19 @@ public class RegisterPatient extends JFrame {
 		panel.add(surnamefield);
 		
 		JLabel label = new JLabel("Forename:");
-		label.setBounds(21, 33, 59, 14);
+		label.setBounds(21, 33, 89, 14);
 		panel.add(label);
 		
 		JLabel label_1 = new JLabel("Surname:");
 		label_1.setBounds(21, 64, 59, 14);
 		panel.add(label_1);
 		
-		JButton registerbtn = new JButton("Register");
-		registerbtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
-			}
-		});
-		registerbtn.setBounds(101, 366, 89, 23);
-		panel.add(registerbtn);
+		JComboBox titlefield = new JComboBox();
+		titlefield.setModel(new DefaultComboBoxModel(new String[] {"", "Mr", "Mr's", "Miss"}));
+		titlefield.setBounds(145, 97, 120, 20);
+		panel.add(titlefield);
+		
+		
 		
 		JLabel lblTitle = new JLabel("Title:");
 		lblTitle.setBounds(21, 94, 59, 14);
@@ -114,11 +124,6 @@ public class RegisterPatient extends JFrame {
 		phonenumberfield.setColumns(10);
 		phonenumberfield.setBounds(145, 128, 120, 20);
 		panel.add(phonenumberfield);
-		
-		JComboBox titlefield = new JComboBox();
-		titlefield.setModel(new DefaultComboBoxModel(new String[] {"", "Mr", "Mr's", "Miss"}));
-		titlefield.setBounds(145, 97, 120, 20);
-		panel.add(titlefield);
 		
 		JLabel lblHouseNo = new JLabel("House no:");
 		lblHouseNo.setBounds(21, 195, 59, 14);
@@ -161,8 +166,144 @@ public class RegisterPatient extends JFrame {
 		panel.add(lblCity);
 		
 		JDateChooser dateofbirthfield = new JDateChooser();
+		dateofbirthfield.getCalendarButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		dateofbirthfield.setDateFormatString("yyyy-MM-dd");
 		dateofbirthfield.setBounds(145, 159, 120, 20);
 		panel.add(dateofbirthfield);
+		
+		JButton btnClear = new JButton("Clear");
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				forenamefield.setText("");
+				surnamefield.setText("");
+				titlefield.setSelectedIndex(0);;
+				phonenumberfield.setText("");
+				dateofbirthfield.setCalendar(null);
+				housefield.setText("");
+				streetfield.setText("");
+				districtfield.setText("");
+				cityfield.setText("");
+				postcodefield.setText("");
+			}
+		});
+		btnClear.setBounds(21, 366, 89, 23);
+		panel.add(btnClear);
 		setLocationRelativeTo(null);
+		
+		JButton registerbtn = new JButton("Register");
+		registerbtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e){
+				
+				//get values from fields
+				forename = forenamefield.getText();
+				surname = surnamefield.getText();
+				title = (String) titlefield.getSelectedItem();
+				phonenumber = phonenumberfield.getText();
+				SimpleDateFormat Date_Format = new SimpleDateFormat("yyyy-MM-dd");
+				dateOfBirth = "";
+				//formats the date of birth 
+			    if (dateofbirthfield.getDate() != null) {
+				dateOfBirth = Date_Format.format(dateofbirthfield.getDate());
+				}	
+				house = housefield.getText();
+				street = streetfield.getText();
+				district = districtfield.getText();
+				city = cityfield.getText();
+				postcode = postcodefield.getText();
+				
+				
+				//validate non empty fields
+				if (postcode != ("") && forename != ("") && surname != ("") && title != ("") && phonenumber != ("")
+						&& dateOfBirth != ("") && house != ("") && street != ("") && district != ("") && city != ("") 
+						&& postcode != ("")) {
+					System.out.println("here");
+					
+					//validate is a number for house
+					try
+				    {
+				      houseint = Integer.parseInt(house);
+				    }
+				    catch (NumberFormatException nfe)
+				    {
+				    	final JDialog dialog = new JDialog();
+				    	dialog.setAlwaysOnTop(true);    
+						JOptionPane.showMessageDialog(dialog,
+				    		    "House number must be a number.",
+				    		    "Type error",
+				    		    JOptionPane.ERROR_MESSAGE);
+				    }
+					
+					//call insert method
+					try {
+						doinsert();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					setVisible(false);
+				}
+				//display error if all fields not complete
+				else {
+					final JDialog dialog = new JDialog();
+			    	dialog.setAlwaysOnTop(true);    
+					JOptionPane.showMessageDialog(dialog,
+			    		    "One or more fields is not completed.",
+			    		    "Completion error",
+			    		    JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		registerbtn.setBounds(176, 366, 89, 23);
+		panel.add(registerbtn);
+	}
+	
+	//method to insert the new data to address and patient tables
+	public void doinsert() throws Exception {
+		Statement stmt = null;
+		System.out.println(house);
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team009", "team009", "9e81b723")){
+			stmt = con.createStatement();
+			//get next id for table
+			int newid = 0;
+				ResultSet res = stmt.executeQuery("SELECT MAX(patientID) FROM Patient");
+				while (res.next()) {
+					newid = res.getInt(1) +1;
+				}
+		
+			String SQL = "INSERT INTO Address VALUES (?, ?, ?, ?, ?)";
+			PreparedStatement pstmt = con.prepareStatement(SQL);
+			pstmt.setInt(1, houseint);
+			pstmt.setString(2, postcode);
+			pstmt.setString(3, street);
+			pstmt.setString(4, district);
+			pstmt.setString(5, city);
+			pstmt.executeUpdate();
+			pstmt.close();
+				
+			String SQL2 = "INSERT INTO Patient VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+			PreparedStatement pstmt2 = con.prepareStatement(SQL2);
+			pstmt2.setInt(1, newid);
+			pstmt2.setInt(2, houseint);
+			pstmt2.setString(3, postcode);
+			pstmt2.setString(4, title);
+			pstmt2.setString(5, forename);
+			pstmt2.setString(6, surname);
+			pstmt2.setString(7, dateOfBirth);
+			pstmt2.setString(8, phonenumber);
+			pstmt2.executeUpdate();
+			pstmt2.close();
+
+		}
+		catch (SQLException ex) {
+				ex.printStackTrace();
+		}
+		finally {
+				if (stmt != null)
+					stmt.close();
+		}
 	}
 }
