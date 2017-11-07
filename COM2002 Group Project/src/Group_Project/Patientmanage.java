@@ -124,7 +124,6 @@ public class Patientmanage extends JFrame {
 					e.printStackTrace();
 				}
 				
-				
 			}
 		});
 		searchbtn.setBounds(37, 117, 89, 23);
@@ -186,8 +185,6 @@ public class Patientmanage extends JFrame {
 				} catch (Exception e) {
 				}
 		        
-		        
-		        System.out.println(patientrowSelectedID);
 			}
 		});
 		searchscrollPane.setViewportView(searchtable);

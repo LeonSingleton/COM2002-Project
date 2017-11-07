@@ -214,7 +214,6 @@ public class RegisterPatient extends JFrame {
 				city = cityfield.getText();
 				postcode = postcodefield.getText();
 				
-				
 				//validate non empty fields
 				if (postcode != ("") && forename != ("") && surname != ("") && title != ("") && phonenumber != ("")
 						&& dateOfBirth != ("") && house != ("") && street != ("") && district != ("") && city != ("") 
