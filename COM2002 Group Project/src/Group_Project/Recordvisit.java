@@ -11,38 +11,120 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Vector;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
 
 public class Recordvisit extends JFrame {
 
 	private JPanel contentPane;
+	private JTable table;
+	private JScrollPane scrollPane;
+	private JTextField textField;
 
-	/**
+	
+	public static Vector<Vector<Object>> getTreatments() throws SQLException{
+		Statement stmt = null;
+		Vector<Vector<Object>> treatments = null;
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team009", "team009", "9e81b723")){
+			
+			stmt = con.createStatement();
+			ResultSet res = stmt.executeQuery("SELECT treatmentName FROM Treatment");
+			treatments = new Vector<Vector<Object>>();
+			while (res.next()) {
+				Vector<Object> vector = new Vector<Object>();
+				vector.add(res.getString(1));	
+				vector.add(false);
+				treatments.add(vector);
+			};
+		
+			
+		}
+			catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			finally {
+					if (stmt != null)
+						stmt.close();
+			
+			}
+		return treatments;
+		}
+	
+	public static void recordTreatment(String treatmentName, int appointmentID) throws SQLException{
+		PreparedStatement pstmt = null;
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team009", "team009", "9e81b723")){
+			
+			pstmt = con.prepareStatement("INSERT INTO Visit(appointmentId,treatmentName) VALUES(?,?)");
+			pstmt.setObject(1,appointmentID);
+			pstmt.setObject(2,treatmentName);
+			int count = pstmt.executeUpdate();
+			
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		finally {
+				if (pstmt != null)
+					pstmt.close();
+		
+		}
+	}
+	
+	public static String displayAppointment(String title, String forename, String surname,String  startTime) {
+		String appointmentDetails = "Record visit for " + title + " "  + forename + " " + surname + " at " + startTime +".";
+		return appointmentDetails;
+	}
+		/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try {
-					Recordvisit frame = new Recordvisit();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				
 			}
 		});
 	}
 
+	public static DefaultTableModel buildRecordVisitTable()
+	        throws SQLException {
+
+			Vector<String> columnNames = new Vector<String>(); 
+			columnNames.add("Treatment");
+			columnNames.add("Received?");
+			
+			Vector<Vector<Object>> data = getTreatments(); 
+			
+			return new DefaultTableModel(data, columnNames);
+	}
 	/**
 	 * Create the frame.
 	 */
-	public Recordvisit() {
+	public Recordvisit(int appointmentID, String title, String forename, String surname,String  startTime) {
 		setTitle("Record a visit");
 		setAlwaysOnTop(true);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 398, 288);
+		setBounds(100, 100, 500, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -50,66 +132,66 @@ public class Recordvisit extends JFrame {
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 		
-		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(null, "Dental Options", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.setBounds(10, 11, 372, 108);
-		contentPane.add(panel);
-		panel.setLayout(null);
 		
-		JCheckBox chckbxSmallFilling = new JCheckBox("Small filling \u00A370");
-		chckbxSmallFilling.setBounds(6, 16, 144, 23);
-		panel.add(chckbxSmallFilling);
 		
-		JCheckBox chckbxMediumFilling = new JCheckBox("Medium filling \u00A390");
-		chckbxMediumFilling.setBounds(6, 47, 144, 23);
-		panel.add(chckbxMediumFilling);
-		
-		JCheckBox chckbxLargeFilling = new JCheckBox("Large filling \u00A3110");
-		chckbxLargeFilling.setBounds(6, 78, 144, 23);
-		panel.add(chckbxLargeFilling);
-		
-		JCheckBox chckbxRootCanalAnterior = new JCheckBox("Root Canal \u00A3300");
-		chckbxRootCanalAnterior.setBounds(175, 16, 147, 23);
-		panel.add(chckbxRootCanalAnterior);
-		
-		JCheckBox chckbxCrown = new JCheckBox("Crown \u00A3450");
-		chckbxCrown.setBounds(175, 47, 147, 23);
-		panel.add(chckbxCrown);
-		
-		JCheckBox chckbxExttraction = new JCheckBox("Extraction \u00A3100");
-		chckbxExttraction.setBounds(175, 78, 147, 23);
-		panel.add(chckbxExttraction);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(25, 60, 450, 300);
+		contentPane.add(scrollPane);
 		
 		JButton btnRecordVisit = new JButton("Record Visit");
-		btnRecordVisit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
-			}
-		});
-		btnRecordVisit.setBounds(125, 219, 105, 23);
+
+		JTable recordTreatments;
+		try {
+			recordTreatments = new JTable(buildRecordVisitTable()){
+
+	            private static final long serialVersionUID = 1L;
+            
+	            public Class getColumnClass(int column) {
+	                switch (column) {
+	                    case 0:
+	                        return String.class;
+	                    default:
+	                        return Boolean.class;
+	                }
+	            }
+	        };
+	        recordTreatments.setRowHeight(40);
+			scrollPane.setViewportView(recordTreatments);
+			setLocationRelativeTo(null);
+			btnRecordVisit.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int treatmentCount = recordTreatments.getRowCount();
+					for (int i=0;i<treatmentCount;i++) {
+						if ((Boolean) recordTreatments.getValueAt(i, 1)) {
+							String treatment = (String) recordTreatments.getValueAt(i, 0);
+								try {
+									recordTreatment(treatment,appointmentID);
+								} catch (SQLException e1) {
+									e1.printStackTrace();
+								}
+						}
+					}
+					setVisible(false);
+				}
+			});
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		btnRecordVisit.setBounds(100, 390, 300, 50);
 		contentPane.add(btnRecordVisit);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setLayout(null);
-		panel_1.setBorder(new TitledBorder(null, "Hygiene Options", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBounds(10, 130, 372, 78);
-		contentPane.add(panel_1);
+		textField = new JTextField(displayAppointment(title, forename, surname, startTime));
+		textField.setBounds(25, 15, 450, 35);
+		contentPane.add(textField);
+		textField.setColumns(10);
 		
-		JCheckBox chckbxSimpleScale = new JCheckBox("Simple Scale \u00A330");
-		chckbxSimpleScale.setBounds(6, 16, 166, 23);
-		panel_1.add(chckbxSimpleScale);
+		JTextArea textArea = new JTextArea(displayAppointment(title, forename, surname, startTime));
+		textArea.setBounds(25, 15, 450, 35);
+		contentPane.add(textArea);
 		
-		JCheckBox chckbxScaleAndPolish = new JCheckBox("Scale and Polish \u00A360");
-		chckbxScaleAndPolish.setBounds(6, 47, 166, 23);
-		panel_1.add(chckbxScaleAndPolish);
 		
-		JCheckBox chckbxAdvancedScale = new JCheckBox("Advanced Scale \u00A350");
-		chckbxAdvancedScale.setBounds(174, 16, 192, 23);
-		panel_1.add(chckbxAdvancedScale);
-		
-		JCheckBox chckbxFullPeriodonctalClean = new JCheckBox("Full periodonctal clean \u00A3150");
-		chckbxFullPeriodonctalClean.setBounds(174, 47, 192, 23);
-		panel_1.add(chckbxFullPeriodonctalClean);
 	}
-
 }
