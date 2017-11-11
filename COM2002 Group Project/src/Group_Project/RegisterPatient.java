@@ -101,8 +101,6 @@ public class RegisterPatient extends JFrame {
 		titlefield.setBounds(145, 97, 120, 20);
 		panel.add(titlefield);
 		
-		
-		
 		JLabel lblTitle = new JLabel("Title:");
 		lblTitle.setBounds(21, 94, 59, 14);
 		panel.add(lblTitle);

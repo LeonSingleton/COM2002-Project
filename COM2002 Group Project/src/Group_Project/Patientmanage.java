@@ -263,6 +263,7 @@ public class Patientmanage extends JFrame {
 		
 		return false;
 	}
+	
 	//using the values passsed in founds the unique patient id relating to these values
 	public int getIdfromselectedrow(String Fname, String Sname, String Postcode, String Housenumber) throws Exception{
 		Statement stmt = null;

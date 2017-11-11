@@ -16,20 +16,21 @@ public class testing_sql {
 			stmt = con.createStatement();
 			
 			
-			ResultSet res = stmt.executeQuery("SELECT * FROM TreatmentsUsed");
+			ResultSet res = stmt.executeQuery("SELECT * FROM Appointment");
 			while (res.next()) {
-				//String planName = res.getString("planName");
-				//String title = res.getString("title");
-				//String forename = res.getString("forename");
-				//String surname = res.getString("surname");
-				String id = res.getString("startDate");
-				//System.out.println(" " + title + " " + forename + " " + surname + " " + dateofbirth + " ");
-				System.out.println(id);
+				String planName = res.getString("appointmentId");
+				String title = res.getString("patientID");
+				String forename = res.getString("appointmentDate");
+				String surname = res.getString("startTime");
+				String id = res.getString("endTime");
+				String partner = res.getString("partner");
+				System.out.println(" " + planName + " " + title + " " + forename + " " + surname + " " + id + " " + partner + " ");
+				//System.out.println(id);
 			}
 					
 			//RETRIEVES COLUMN NAMES FOR A TABLE
 			DatabaseMetaData meta = con.getMetaData();
-		     ResultSet resultSet = meta.getColumns("team009", null, "TreatmentsUsed", "%");
+		     ResultSet resultSet = meta.getColumns("team009", null, "Appointment", "%");
 		     while (resultSet.next()) {
 		       System.out.println(resultSet.getString(4));
 			}
