@@ -97,6 +97,12 @@ public class Healthcaresubscribe extends JFrame {
 				if ((String) planfield.getSelectedItem()!=""){
 				try {
 					addpatienttoplan();
+					final JDialog dialog = new JDialog();
+			    	dialog.setAlwaysOnTop(true);    
+					JOptionPane.showMessageDialog(dialog,
+			    		    "Subscription Successful!",
+			    		    "Confirmation",
+			    		    JOptionPane.INFORMATION_MESSAGE);
 				} catch (Exception e1) {
 				}
 				setVisible(false);

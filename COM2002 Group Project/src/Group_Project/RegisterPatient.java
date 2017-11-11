@@ -236,6 +236,12 @@ public class RegisterPatient extends JFrame {
 					//call insert method
 					try {
 						doinsert();
+						final JDialog dialog = new JDialog();
+				    	dialog.setAlwaysOnTop(true);    
+						JOptionPane.showMessageDialog(dialog,
+				    		    "Registration Successful!",
+				    		    "Confirmation",
+				    		    JOptionPane.INFORMATION_MESSAGE);
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
