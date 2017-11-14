@@ -133,8 +133,8 @@ public class CalenderView extends JFrame {
 					 int month = Integer.parseInt(datefield.substring(5,7));
 					 int year = Integer.parseInt(datefield.substring(0,4));
 					
-					 //use the variables to set the calendar start date, then get the next 6 dates
-					 Calendar start = Calendar.getInstance();
+					 	//use the variables to set the calendar start date, then get the next 6 dates
+					 	Calendar start = Calendar.getInstance();
 						start.set(year, month-1, day);
 						Calendar end = Calendar.getInstance();
 						end.setTime(start.getTime());
@@ -148,7 +148,7 @@ public class CalenderView extends JFrame {
 						                Calendar.DATE, 1), dt = start.getTime()) {
 							datelist.add(sdf.format(dt));
 						}
-						
+						System.out.println(datelist);
 						//fill the two tables using the week of dates created
 						try {
 							fillhygienisttable();

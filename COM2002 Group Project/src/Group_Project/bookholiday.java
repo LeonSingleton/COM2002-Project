@@ -174,7 +174,7 @@ public class bookholiday extends JFrame {
 			pstmt.setInt(1, newid);
 			pstmt.setString(2, "6");
 			pstmt.setString(3, datefield);
-			pstmt.setString(4, "9:00");
+			pstmt.setString(4, "09:00");
 			pstmt.setString(5, "18:00");
 			pstmt.setString(6, partner);
 			pstmt.executeUpdate();
