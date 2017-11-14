@@ -1,6 +1,5 @@
 package Group_Project;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
@@ -8,7 +7,6 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JCheckBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -17,27 +15,43 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Vector;
 import java.awt.event.ActionEvent;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
 
 public class Recordvisit extends JFrame {
 
 	private JPanel contentPane;
-	private JTable table;
-	private JScrollPane scrollPane;
 	private JTextField textField;
+	private Boolean alreadyRecorded;
 
 	
+	public static Boolean checkExist(int appointmentID) throws SQLException{
+		PreparedStatement pstmt = null;
+		Boolean exist=false;
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team009", "team009", "9e81b723")){
+			
+			pstmt = con.prepareStatement("SELECT * FROM Visit WHERE appointmentId=?");
+			pstmt.setObject(1,appointmentID);
+			ResultSet res = pstmt.executeQuery();
+			exist=res.next();
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		finally {
+				if (pstmt != null)
+					pstmt.close();
+		
+		}
+		return exist;
+	}
 	public static Vector<Vector<Object>> getTreatments() throws SQLException{
 		Statement stmt = null;
 		Vector<Vector<Object>> treatments = null;
@@ -75,7 +89,7 @@ public class Recordvisit extends JFrame {
 			pstmt = con.prepareStatement("INSERT INTO Visit(appointmentId,treatmentName) VALUES(?,?)");
 			pstmt.setObject(1,appointmentID);
 			pstmt.setObject(2,treatmentName);
-			int count = pstmt.executeUpdate();
+			pstmt.executeUpdate();
 			
 		}
 		catch (SQLException e) {
@@ -90,8 +104,14 @@ public class Recordvisit extends JFrame {
 		}
 	}
 	
-	public static String displayAppointment(String title, String forename, String surname,String  startTime) {
-		String appointmentDetails = "Record visit for " + title + " "  + forename + " " + surname + " at " + startTime +".";
+	public static String displayAppointment(int appointmentID, String title, String forename, String surname,String  startTime) throws SQLException{
+		String appointmentDetails="";
+		if (checkExist(appointmentID)) {
+			appointmentDetails = "This visit has already been recorded.";
+		}
+		else {
+			appointmentDetails = "Record visit for " + title + " "  + forename + " " + surname + " at " + startTime +".";
+		}
 		return appointmentDetails;
 	}
 		/**
@@ -132,7 +152,9 @@ public class Recordvisit extends JFrame {
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 		
-		
+		JTextArea textArea = new JTextArea();
+		textArea.setBounds(25, 15, 450, 35);
+		contentPane.add(textArea);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(25, 60, 450, 300);
@@ -142,40 +164,48 @@ public class Recordvisit extends JFrame {
 
 		JTable recordTreatments;
 		try {
-			recordTreatments = new JTable(buildRecordVisitTable()){
+			textArea.setText(displayAppointment(appointmentID, title, forename, surname, startTime));
+			
+			if (!checkExist(appointmentID)) {
+				recordTreatments = new JTable(buildRecordVisitTable()){
 
-	            private static final long serialVersionUID = 1L;
+					private static final long serialVersionUID = 1L;
             
-	            public Class getColumnClass(int column) {
-	                switch (column) {
-	                    case 0:
-	                        return String.class;
-	                    default:
-	                        return Boolean.class;
-	                }
-	            }
-	        };
-	        recordTreatments.setRowHeight(40);
-			scrollPane.setViewportView(recordTreatments);
-			setLocationRelativeTo(null);
-			btnRecordVisit.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					int treatmentCount = recordTreatments.getRowCount();
-					for (int i=0;i<treatmentCount;i++) {
-						if ((Boolean) recordTreatments.getValueAt(i, 1)) {
-							String treatment = (String) recordTreatments.getValueAt(i, 0);
-								try {
-									recordTreatment(treatment,appointmentID);
-								} catch (SQLException e1) {
-									e1.printStackTrace();
-								}
+					public Class getColumnClass(int column) {
+						switch (column) {
+							case 0:
+								return String.class;
+							default:
+								return Boolean.class;
 						}
 					}
-					setVisible(false);
-				}
-			});
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+				};
+				recordTreatments.setRowHeight(40);
+				scrollPane.setViewportView(recordTreatments);
+				setLocationRelativeTo(null);
+				btnRecordVisit.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						int treatmentCount = recordTreatments.getRowCount();
+						for (int i=0;i<treatmentCount;i++) {
+							if ((Boolean) recordTreatments.getValueAt(i, 1)) {
+								String treatment = (String) recordTreatments.getValueAt(i, 0);
+									try {
+										recordTreatment(treatment,appointmentID);
+									} catch (SQLException e1) {
+										e1.printStackTrace();
+									}
+							}
+						}
+						setVisible(false);
+					}
+			
+				});
+			}
+			else {
+				btnRecordVisit.setEnabled(false);
+			}
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
@@ -183,14 +213,9 @@ public class Recordvisit extends JFrame {
 		btnRecordVisit.setBounds(100, 390, 300, 50);
 		contentPane.add(btnRecordVisit);
 		
-		textField = new JTextField(displayAppointment(title, forename, surname, startTime));
-		textField.setBounds(25, 15, 450, 35);
-		contentPane.add(textField);
-		textField.setColumns(10);
 		
-		JTextArea textArea = new JTextArea(displayAppointment(title, forename, surname, startTime));
-		textArea.setBounds(25, 15, 450, 35);
-		contentPane.add(textArea);
+		
+		
 		
 		
 	}

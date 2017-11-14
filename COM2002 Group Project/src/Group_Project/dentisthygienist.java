@@ -72,6 +72,29 @@ public class dentisthygienist extends JFrame {
 		return data;
 	}
 	
+	public static Boolean checkExist(int appointmentID) throws SQLException{
+		PreparedStatement pstmt = null;
+		Boolean exist=false;
+		try (Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team009", "team009", "9e81b723")){
+			
+			pstmt = con.prepareStatement("SELECT * FROM Visit WHERE appointmentId=?");
+			pstmt.setObject(1,appointmentID);
+			ResultSet res = pstmt.executeQuery();
+			exist=res.next();
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		finally {
+				if (pstmt != null)
+					pstmt.close();
+		
+		}
+		return exist;
+	}
+	
 	public static DefaultTableModel buildTodayApptTable(String user)
 	        throws SQLException {
 
@@ -196,6 +219,8 @@ public class dentisthygienist extends JFrame {
 					
 				}
 			});
+
+
 		} catch (SQLException e) {
 			btnRecordVisit.setEnabled(true);
 			e.printStackTrace();
