@@ -23,6 +23,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
+@SuppressWarnings("serial")
 public class dentisthygienist extends JFrame {
 
 	private JPanel contentPane;
@@ -83,7 +84,6 @@ public class dentisthygienist extends JFrame {
 			exist=res.next();
 		}
 		catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -176,7 +176,7 @@ public class dentisthygienist extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblTodaysAppointments = new JLabel("Todays Appointments:");
-		lblTodaysAppointments.setBounds(32, 21, 143, 23);
+		lblTodaysAppointments.setBounds(157, 30, 143, 23);
 		contentPane.add(lblTodaysAppointments);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -238,7 +238,7 @@ public class dentisthygienist extends JFrame {
 		textArea.setEditable(false);
 		textArea.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		try {
-		textArea.setText(findNextAppt(user));
+			textArea.setText(findNextAppt(user));
 		}
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -247,7 +247,17 @@ public class dentisthygienist extends JFrame {
 		textArea.setBounds(488, 59, 441, 114);
 		contentPane.add(textArea);
 		
-		
+		JButton home = new JButton("Home");
+		home.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		home.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Secretaryhome Secretaryhome = new Secretaryhome();   
+		        setVisible(false); // Hide current frame
+		        Secretaryhome.setVisible(true);
+			}
+		});
+		home.setBounds(12, 6, 79, 35);
+		contentPane.add(home);
 					
 					
 	}

@@ -5,9 +5,12 @@ import java.awt.EventQueue;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -197,6 +200,12 @@ public class Recordvisit extends JFrame {
 							}
 						}
 						setVisible(false);
+						final JDialog dialog = new JDialog();
+						dialog.setAlwaysOnTop(true);    
+						JOptionPane.showMessageDialog(dialog,
+			    		    "Visit Recorded Successfully!",
+			    		    "Confirmation",
+			    		    JOptionPane.INFORMATION_MESSAGE);
 					}
 			
 				});
