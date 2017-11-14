@@ -1,6 +1,5 @@
 package Group_Project;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -11,7 +10,9 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 
+@SuppressWarnings("serial")
 public class Secretaryhome extends JFrame {
 
 	private JPanel contentPane;
@@ -37,9 +38,9 @@ public class Secretaryhome extends JFrame {
 	 */
 	public Secretaryhome() {
 		setResizable(false);
-		setTitle("Secreatry Home");
+		setTitle("Sheffield Dental Care");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 726, 294);
+		setBounds(100, 100, 860, 400);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -54,7 +55,7 @@ public class Secretaryhome extends JFrame {
 		        CalenderView.setVisible(true);
 			}
 		});
-		viewcalendar.setBounds(10, 112, 123, 42);
+		viewcalendar.setBounds(10, 150, 160, 50);
 		contentPane.add(viewcalendar);
 		
 		JButton manageappointments = new JButton("Manage Appointments");
@@ -66,7 +67,7 @@ public class Secretaryhome extends JFrame {
 				
 			}
 		});
-		manageappointments.setBounds(143, 112, 167, 40);
+		manageappointments.setBounds(180, 150, 160, 50);
 		contentPane.add(manageappointments);
 		
 		JButton managepatient = new JButton("Manage Patient");
@@ -77,7 +78,7 @@ public class Secretaryhome extends JFrame {
 		        Patientmanage.setVisible(true);
 			}
 		});
-		managepatient.setBounds(315, 115, 130, 37);
+		managepatient.setBounds(350, 150, 160, 50);
 		contentPane.add(managepatient);
 		
 		JButton bookholiday = new JButton("Book Holiday");
@@ -88,7 +89,7 @@ public class Secretaryhome extends JFrame {
 		        bookholiday.setVisible(true);
 			}
 		});
-		bookholiday.setBounds(455, 115, 118, 37);
+		bookholiday.setBounds(520, 150, 160, 50);
 		contentPane.add(bookholiday);
 		
 		JButton billing = new JButton("Billing");
@@ -99,12 +100,13 @@ public class Secretaryhome extends JFrame {
 		        Billing.setVisible(true);
 			}
 		});
-		billing.setBounds(576, 115, 124, 37);
+		billing.setBounds(690, 150, 160, 50);
 		contentPane.add(billing);
 		
 		JLabel label = new JLabel("Welcome");
+		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		label.setBounds(287, 23, 278, 37);
+		label.setBounds(355, 50, 150, 50);
 		contentPane.add(label);
 		
 		JButton dentist = new JButton("Dentist");
@@ -115,7 +117,7 @@ public class Secretaryhome extends JFrame {
 		        dentist.setVisible(true);
 			}
 		});
-		dentist.setBounds(183, 189, 97, 25);
+		dentist.setBounds(200, 250, 160, 50);
 		contentPane.add(dentist);
 		
 		JButton hygienist = new JButton("Hygienist");
@@ -126,7 +128,7 @@ public class Secretaryhome extends JFrame {
 		        hygienist.setVisible(true);
 			}
 		});
-		hygienist.setBounds(415, 189, 97, 25);
+		hygienist.setBounds(460, 250, 160, 50);
 		contentPane.add(hygienist);
 	}
 }
