@@ -107,16 +107,7 @@ public class Recordvisit extends JFrame {
 		}
 	}
 	
-	public static String displayAppointment(int appointmentID, String title, String forename, String surname,String  startTime) throws SQLException{
-		String appointmentDetails="";
-		if (checkExist(appointmentID)) {
-			appointmentDetails = "This visit has already been recorded.";
-		}
-		else {
-			appointmentDetails = "Record visit for " + title + " "  + forename + " " + surname + " at " + startTime +".";
-		}
-		return appointmentDetails;
-	}
+	
 		/**
 	 * Launch the application.
 	 */
@@ -167,7 +158,7 @@ public class Recordvisit extends JFrame {
 
 		JTable recordTreatments;
 		try {
-			textArea.setText(displayAppointment(appointmentID, title, forename, surname, startTime));
+			textArea.setText("Record visit for " + title + " "  + forename + " " + surname + " at " + startTime +".");
 			
 			if (!checkExist(appointmentID)) {
 				recordTreatments = new JTable(buildRecordVisitTable()){
