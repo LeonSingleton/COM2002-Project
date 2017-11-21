@@ -190,7 +190,8 @@ public class dentisthygienist extends JFrame {
 				vector.add(rs.getString("forename"));
 				vector.add(rs.getString("surname"));
 				vector.add(rs.getString("startTime"));
-				vector.add(rs.getString("endTime"));				
+				vector.add(rs.getString("endTime"));
+				vector.add(rs.getString("type"));
 				data.add(vector);
 			}
 			
@@ -240,6 +241,7 @@ public class dentisthygienist extends JFrame {
 			columnNames.add("Patient Surname");
 			columnNames.add("Start Time");
 			columnNames.add("End Time");
+			columnNames.add("Appointment Type");
 			
 			Vector<Vector<Object>> data = getTodaysAppts(user);
 			
