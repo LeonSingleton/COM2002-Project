@@ -183,7 +183,6 @@ public class Billing extends JFrame {
 		        
 		        try{
 		        	patientrowSelectedID = getIdfromselectedrow(Fname, Sname, Postcode, Housenumber);
-		        	System.out.println(patientrowSelectedID);
 		        	txtInfo.setText("Unpaid treatments for "+Fname+" "+Sname);
 		        	txtInfo.setVisible(true);
 		        }
@@ -413,7 +412,6 @@ public class Billing extends JFrame {
 			checkUpsUsed = treatmentsLeft[3];
 			hygieneUsed = treatmentsLeft[4];
 			repairUsed = treatmentsLeft[5];
-			System.out.println(treatmentsLeft[2]);
 			 while(rs.next())
 			 {
 			     date = rs.getString("appointmentDate");
@@ -423,7 +421,6 @@ public class Billing extends JFrame {
 			     absoluteCost+=cost;
 			     finalCost+=cost;
 			     if (treatment.equals("Check-up")) {
-		    		 System.out.println(true);
 			    	 if (treatmentsLeft[0]>0) {
 			    		 prePaid = true;
 			    		 treatmentsLeft[0]--;

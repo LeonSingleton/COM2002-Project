@@ -148,7 +148,6 @@ public class CalenderView extends JFrame {
 						                Calendar.DATE, 1), dt = start.getTime()) {
 							datelist.add(sdf.format(dt));
 						}
-						System.out.println(datelist);
 						//fill the two tables using the week of dates created
 						try {
 							fillhygienisttable();
@@ -185,7 +184,7 @@ public class CalenderView extends JFrame {
 			try (Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team009", "team009", "9e81b723")){
 			
 				stmt = con.createStatement();
-				String SQL = "SELECT forename, surname, appointmentDate, startTime, endTime FROM Appointment NATURAL JOIN Patient WHERE appointmentDate = ? AND partner = ?";
+				String SQL = "SELECT forename, surname, appointmentDate, startTime, endTime FROM Appointment NATURAL JOIN Patient WHERE appointmentDate = ? AND partner = ? ORDER BY appointmentDate, startTime";
 				PreparedStatement pstmt = con.prepareStatement(SQL);
 				pstmt.setString(1, datelist.get(i));
 				pstmt.setString(2, "Dentist");
@@ -226,7 +225,7 @@ public class CalenderView extends JFrame {
 			try (Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team009", "team009", "9e81b723")){
 			
 				stmt = con.createStatement();
-				String SQL = "SELECT forename, surname, appointmentDate, startTime, endTime FROM Appointment NATURAL JOIN Patient WHERE appointmentDate = ? AND partner = ?";
+				String SQL = "SELECT forename, surname, appointmentDate, startTime, endTime FROM Appointment NATURAL JOIN Patient WHERE appointmentDate = ? AND partner = ? ORDER BY appointmentDate, startTime";
 				PreparedStatement pstmt = con.prepareStatement(SQL);
 				pstmt.setString(1, datelist.get(i));
 				pstmt.setString(2, "Hygienist");

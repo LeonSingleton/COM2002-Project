@@ -169,14 +169,15 @@ public class bookholiday extends JFrame {
 					newid = res.getInt(1) +1;
 				}
 		
-			String SQL = "INSERT INTO Appointment VALUES (?, ?, ?, ?, ?, ?)";
+			String SQL = "INSERT INTO Appointment VALUES (?, ?, ?, ?, ?, ?,?)";
 			PreparedStatement pstmt = con.prepareStatement(SQL);
 			pstmt.setInt(1, newid);
 			pstmt.setString(2, "6");
 			pstmt.setString(3, datefield);
 			pstmt.setString(4, "09:00");
 			pstmt.setString(5, "18:00");
-			pstmt.setString(6, partner);
+			pstmt.setString(6, "Holiday");
+			pstmt.setString(7, partner);
 			pstmt.executeUpdate();
 			pstmt.close();
 				
